@@ -1,0 +1,41 @@
+name: Static Matrix Deployment Simulation
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    name: Deploy - ${{ matrix.os }} - Node ${{ matrix.node-version }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [16, 18, 20]
+        include:
+          - os: ubuntu-latest
+            node-version: 20
+            deploy-target: production
+        exclude:
+          - os: windows-latest
+            node-version: 16
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.node-version == 16 }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Show matrix values
+        run: |
+          echo "Running on OS: ${{ matrix.os }}"
+          echo "Node version: ${{ matrix.node-version }}"
+          echo "Deploy target: ${{ matrix.deploy-target || 'not-set' }}"
+
+      - name: Simulate deployment
+        run: echo "Deploying app built with node ${{ matrix.node-version }} on ${{ matrix.os }}"
