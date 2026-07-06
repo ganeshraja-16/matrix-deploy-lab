@@ -7,7 +7,7 @@ on:
 jobs:
   test-job:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         version: [16, 18, 20]
     runs-on: ubuntu-latest
