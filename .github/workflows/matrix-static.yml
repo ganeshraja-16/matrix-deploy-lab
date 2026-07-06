@@ -38,4 +38,6 @@ jobs:
           echo "Deploy target: ${{ matrix.deploy-target || 'not-set' }}"
 
       - name: Simulate deployment
-        run: echo "Deploying app built with node ${{ matrix.node-version }} on ${{ matrix.os }}"
+        run: |
+          echo "Deploying app built with node ${{ matrix.node-version }} on ${{ matrix.os }}"
+          if [ "${{ matrix.node-version }}" == "16" ]; then exit 1; fi
