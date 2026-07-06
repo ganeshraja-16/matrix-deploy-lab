@@ -7,11 +7,11 @@ on:
 jobs:
   test-job:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         version: [16, 18, 20]
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.version == 16 }}
+    continue-on-error: ${{ matrix.version == 20 }}
     steps:
       - name: Print version
         run: echo "Testing version ${{ matrix.version }}"
@@ -20,8 +20,5 @@ jobs:
         run: |
           echo "Starting task for version ${{ matrix.version }}"
           sleep 15
-          if [ "${{ matrix.version }}" == "16" ] || [ "${{ matrix.version }}" == "18" ]; then
-            echo "Something went wrong!"
-            exit 1
-          fi
-          echo "Task finished successfully for version ${{ matrix.version }}"
+          echo "Something went wrong!"
+          exit 1
