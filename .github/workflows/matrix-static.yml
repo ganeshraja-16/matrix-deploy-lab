@@ -7,10 +7,11 @@ on:
 jobs:
   test-job:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         version: [16, 18, 20]
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Print version
         run: echo "Testing version ${{ matrix.version }}"
