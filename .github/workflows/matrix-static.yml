@@ -1,24 +1,16 @@
-name: Simple Matrix Test
+name: Continue On Error Test
 
 on:
   push:
     branches: [main]
 
 jobs:
-  test-job:
-    strategy:
-      fail-fast: false
-      matrix:
-        version: [16, 18, 20]
+  will-fail-but-continue:
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.version == 20 }}
+    continue-on-error: true
     steps:
-      - name: Print version
-        run: echo "Testing version ${{ matrix.version }}"
+      - name: This step will fail
+        run: exit 1
 
-      - name: Wait and maybe fail
-        run: |
-          echo "Starting task for version ${{ matrix.version }}"
-          sleep 15
-          echo "Something went wrong!"
-          exit 1
+      - name: This step should still run
+        run: echo "I still ran even though the previous step failed!"
